@@ -2,7 +2,8 @@
 
 void conv2D::makeRing()
 {
-  remove("vid");
+  std::string s=zName+"_vid";
+  remove(s.c_str());
   int i,nxt;
   ringo=new polyr;
   polyr *cur=ringo;
@@ -224,8 +225,9 @@ bool conv2D::polyg::contains(double xp,double yp)
   return(true);
 }
 
-conv2D::conv2D(int n,double *xv,double *yv)
+conv2D::conv2D(int n,double *xv,double *yv,std::string zoname)
 {
+  zName=zoname;
   size=n;
   zo=NULL;
   zcon=0;
@@ -259,8 +261,9 @@ bool conv2D::contains(const double xp,const double yp)
   return(false);
 }
 
-void conv2D::printZones(std::string file,std::string cent)
+void conv2D::printZones()
 {
+  std::string file,cent;
   polyz *cur=zo;
   polyr *rng;
   int numz=0;
@@ -269,6 +272,8 @@ void conv2D::printZones(std::string file,std::string cent)
       std::cout<<"No zones present.\n";
       return;
     }
+  file=zName+"_zones";
+  cent=zName+"_centroids";
   std::fstream F(file.c_str(),std::ios::out);
   std::fstream G(cent.c_str(),std::ios::out);
   while(cur)
@@ -293,7 +298,7 @@ void conv2D::printZones(std::string file,std::string cent)
 void conv2D::priZ(polyr *rng)
 {
   std::ostringstream os;
-  os<<"zone"<<zcon;
+  os<<zName<<"Zone"<<zcon;
   std::fstream F(os.str().c_str(),std::ios::out);
   polyr *cur=rng;
   do
@@ -305,14 +310,15 @@ void conv2D::priZ(polyr *rng)
   F<<x[cur->id]<<" "<<y[cur->id]<<"\n";
   F.close();
 
-  F.open("vid",std::ios::out|std::ios::app);
+  std::string s=zName+"_vid";
+  F.open(s.c_str(),std::ios::out|std::ios::app);
   if(zcon==0)
-    F<<"set xrange [-1:1]\nset yrange [-1:1]\nset size ratio 1\n";
+    F<<"set xrange [-1:1]\nset yrange [-1:1]\nset size ratio 1\nunset key\n";
   F<<"p ";
   for(int i=0;i<=zcon;i++)
     {
       std::ostringstream ostr;
-      ostr<<"zone"<<i;
+      ostr<<zName<<"Zone"<<i;
       F<<"'"<<ostr.str()<<"' w l lw 3";
       if(i<zcon)
 	F<<",";

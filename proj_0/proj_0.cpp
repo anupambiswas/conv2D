@@ -29,7 +29,7 @@ int main()
     }
   F.close();
 
-  bord.printZones("zones");
+  bord.printZones();
 
   return(0);
 }

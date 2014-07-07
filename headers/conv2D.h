@@ -11,6 +11,7 @@ class conv2D
 {
   double *x,*y;
   int size;
+  std::string zName;
 
   typedef struct Polyring
   {
@@ -48,10 +49,10 @@ class conv2D
   void addPolyz(polyr *ring,const double xcen,const double ycen);
   void priZ(polyr *rng);
 public:
-  conv2D(int n,double *xv=NULL,double *yv=NULL);
+  conv2D(int n,double *xv=NULL,double *yv=NULL,std::string zoname="region");
   void copyData(double *xv,double *yv);
   bool contains(const double xp,const double yp);
-  void printZones(std::string file,std::string cent="cent");
+  void printZones();
 };
 
 #endif

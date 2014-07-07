@@ -3,4 +3,4 @@ run: ../sources/conv2D.cpp proj_0.cpp
 clean:
 	rm -f *~
 resetf:
-	rm -f zon* *~ pnts cent run vid
+	rm -f pnts cent *Zon* *zon* run datap *~ *vid *cent*
