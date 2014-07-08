@@ -34,14 +34,8 @@ int main(int argc,char *argv[])
   y=new double [n];
   test_0(x,y,n,"datap");
 
-  fstream G("ds",ios::in);
-  for(i=0;i<n;i++)
-    {
-      G>>x[i]>>y[i];
-    }
-  G.close();
-
   conv2D bord(n,x,y);
+
   fstream F;
   F.open("pnts",ios::out);
   double xp,yp;

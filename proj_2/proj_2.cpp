@@ -6,15 +6,26 @@ void test_0(double *xv,double *yv,int n,string file)
 {
   fstream F;
   double pi=4.0*atan(1.0);
-  double rmin,rmax,r,tht,rdif;
+  double rmin,rmax,r,tht,thtinc;
+  int i;
+
   rmin=0.5;
   rmax=1.0;
-  rdif=rmax-rmin;
+  thtinc=pi/n;
+
   F.open(file.c_str(),ios::out);
-  for(int i=0;i<n;i++)
+  for(i=0;i<=n;i++)
     {
-      r=rmin+rdif*rand()/(RAND_MAX+1.0);
-      tht=(2*pi/n)*i;
+      r=rmax;
+      tht=0.5*pi+i*thtinc;
+      xv[i]=r*cos(tht);
+      yv[i]=r*sin(tht);
+      F<<xv[i]<<" "<<yv[i]<<endl;
+    }
+  for(i=n+1;i<2*n+2;i++)
+    {
+      r=rmin;
+      tht=1.5*pi-(i-n-1)*thtinc;
       xv[i]=r*cos(tht);
       yv[i]=r*sin(tht);
       F<<xv[i]<<" "<<yv[i]<<endl;
@@ -26,26 +37,20 @@ void test_0(double *xv,double *yv,int n,string file)
 int main(int argc,char *argv[])
 {
   srand(time(NULL));
-  int n=100,i;
+  int n=10,i;
   if(argc>1)
     n=atoi(argv[1]);
   double *x,*y;
-  x=new double [n];
-  y=new double [n];
+  x=new double [2*n+2];
+  y=new double [2*n+2];
   test_0(x,y,n,"datap");
 
-  fstream G("ds",ios::in);
-  for(i=0;i<n;i++)
-    {
-      G>>x[i]>>y[i];
-    }
-  G.close();
+  conv2D bord(2*n+2,x,y);
 
-  conv2D bord(n,x,y);
   fstream F;
   F.open("pnts",ios::out);
   double xp,yp;
-  for(i=0;i<1000;i++)
+  for(i=0;i<10000;i++)
     {
       xp=-1+2.0*rand()/(RAND_MAX+1.0);
       yp=-1+2.0*rand()/(RAND_MAX+1.0);
